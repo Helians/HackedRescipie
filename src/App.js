@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Card from './card';
 import './App.css';
+import pizza from './assets/Illustration3.png';
+import cheese from './assets/Illustration4.png'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  constructor(){
+    super();
+    this.state = {
+      data: []
+    }
+  }
+
+  //const [recipe, setRecipe] = useState([]);
+  
+  componentDidMount() {
+    fetch("http://starlord.hackerearth.com/recipe")
+    .then(res => res.json())
+    .then(rec => 
+      this.setState({data:rec})
+    );
+  }
+
+  render(){
+    return (
+      <div>
+        <img className="bgImage pizza" src={pizza} />
+        <img className="bgImage cheese" src={cheese} />
+        <div className="App">
+          <h1 className="app-title">Hacked Recipes</h1>
+          <div className="recipe-list">
+            {this.state.data.map(rec=>(
+              <Card recipe = {rec} key={rec.id.toString()} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 }
 
 export default App;
